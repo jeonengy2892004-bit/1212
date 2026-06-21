@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — 12:12 Coffeehouse</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-paper:#FAF7F0;
+    --green-deep:#1C2B22;
+    --green-black:#0F1810;
+    --sand:#D4C9B5;
+    --cream:#F4E9D8;
+    --bronze:#A78A5C;
+    --bronze-light:#C9B68C;
+    --ink:#1C2B22;
+    --serif:'Fraunces', serif;
+    --sans:'Inter', sans-serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    background:var(--bg-paper);color:var(--ink);font-family:var(--sans);
+    -webkit-font-smoothing:antialiased;
+  }
+  button, input{font-family:inherit;}
+  button{cursor:pointer;border:none;background:none;}
+
+  /* ===== LOGIN SCREEN ===== */
+  .login-screen{
+    min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:var(--green-black);padding:20px;
+  }
+  .login-box{
+    background:var(--bg-paper);border-radius:10px;padding:48px 40px;max-width:380px;width:100%;
+    text-align:center;
+  }
+  .login-box .logo{font-family:var(--serif);font-size:1.8rem;color:var(--green-deep);margin-bottom:6px;}
+  .login-box p{color:#6b6353;font-size:0.88rem;margin-bottom:28px;}
+  .login-box input{
+    width:100%;padding:14px 16px;border:1px solid rgba(28,43,34,0.2);border-radius:6px;
+    font-size:0.95rem;margin-bottom:14px;text-align:center;
+  }
+  .login-box input:focus{outline:none;border-color:var(--bronze);}
+  .login-btn{
+    width:100%;background:var(--green-deep);color:var(--bg-paper);padding:14px;
+    border-radius:6px;font-size:0.92rem;font-weight:600;transition:background .25s ease;
+  }
+  .login-btn:hover{background:var(--bronze);}
+  .login-error{color:#b5564a;font-size:0.84rem;margin-top:12px;display:none;}
+  .login-error.show{display:block;}
+  .login-note{margin-top:22px;font-size:0.76rem;color:#9a9282;line-height:1.6;}
+
+  /* ===== ADMIN DASHBOARD ===== */
+  .admin-screen{display:none;}
+  .admin-nav{
+    background:var(--green-deep);color:var(--bg-paper);
+    padding:22px 40px;display:flex;justify-content:space-between;align-items:center;
+  }
+  .admin-nav .logo{font-family:var(--serif);font-size:1.25rem;}
+  .admin-nav .sub{font-size:0.8rem;color:var(--sand);}
+  .logout-btn{
+    border:1px solid var(--sand);color:var(--bg-paper);padding:8px 18px;border-radius:999px;
+    font-size:0.82rem;transition:opacity .25s ease;
+  }
+  .logout-btn:hover{opacity:0.7;}
+
+  .admin-body{max-width:980px;margin:0 auto;padding:48px 32px 80px;}
+  .admin-body h1{font-family:var(--serif);font-size:1.8rem;color:var(--green-deep);margin-bottom:6px;}
+  .admin-body .desc{color:#6b6353;font-size:0.92rem;margin-bottom:36px;}
+
+  .save-toast{
+    position:fixed;bottom:28px;right:28px;background:var(--green-deep);color:var(--bg-paper);
+    padding:14px 24px;border-radius:8px;font-size:0.88rem;
+    display:flex;align-items:center;gap:10px;
+    transform:translateY(20px);opacity:0;transition:transform .3s ease, opacity .3s ease;
+    pointer-events:none;z-index:50;
+  }
+  .save-toast.show{transform:translateY(0);opacity:1;}
+  .save-toast svg{width:16px;height:16px;}
+
+  .category-group{margin-bottom:40px;}
+  .category-group h2{
+    font-family:var(--serif);font-size:1.2rem;color:var(--green-deep);
+    margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(28,43,34,0.12);
+  }
+
+  .product-row{
+    display:flex;align-items:center;gap:18px;
+    background:var(--cream);border-radius:8px;padding:16px 20px;margin-bottom:10px;
+  }
+  .product-row.is-out img{opacity:0.5;}
+  .product-row img{width:52px;height:52px;border-radius:6px;object-fit:cover;flex-shrink:0;}
+  .product-row .info{flex:1;min-width:0;}
+  .product-row .info .name{font-weight:600;font-size:0.95rem;color:var(--green-deep);}
+  .product-row .info .base-price{font-size:0.78rem;color:#9a9282;}
+
+  .price-edit{display:flex;align-items:center;gap:6px;}
+  .price-edit span{font-size:0.85rem;color:#6b6353;}
+  .price-edit input{
+    width:72px;padding:8px 10px;border:1px solid rgba(28,43,34,0.18);border-radius:6px;
+    font-size:0.9rem;text-align:center;
+  }
+  .price-edit input:focus{outline:none;border-color:var(--bronze);}
+
+  .stock-toggle{
+    display:flex;align-items:center;gap:10px;font-size:0.85rem;color:#6b6353;
+    flex-shrink:0;
+  }
+  .switch{
+    position:relative;width:44px;height:24px;border-radius:999px;background:#cdbf9f;
+    transition:background .25s ease;flex-shrink:0;
+  }
+  .switch.on{background:var(--green-deep);}
+  .switch::after{
+    content:'';position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;
+    background:#fff;transition:transform .25s ease;
+  }
+  .switch.on::after{transform:translateX(20px);}
+
+  @media (max-width:640px){
+    .product-row{flex-wrap:wrap;}
+    .admin-nav{padding:18px 20px;}
+    .admin-body{padding:32px 18px 60px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== LOGIN ===== -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-box">
+    <div class="logo">12:12</div>
+    <p>Owner dashboard — enter your password to continue.</p>
+    <input type="password" id="passwordInput" placeholder="Password" autocomplete="off">
+    <button class="login-btn" id="loginBtn">Log In</button>
+    <div class="login-error" id="loginError">Incorrect password. Try again.</div>
+    <div class="login-note">This is a basic access screen for day-to-day menu updates, not a fully secure login. Don't use it to store anything sensitive.</div>
+  </div>
+</div>
+
+<!-- ===== ADMIN DASHBOARD ===== -->
+<div class="admin-screen" id="adminScreen">
+  <nav class="admin-nav">
+    <div>
+      <div class="logo">12:12</div>
+      <div class="sub">Menu Management</div>
+    </div>
+    <button class="logout-btn" id="logoutBtn">Log Out</button>
+  </nav>
+
+  <div class="admin-body">
+    <h1>Manage Your Menu</h1>
+    <p class="desc">Mark items as unavailable when you're out of stock, or update prices. Changes appear on the live menu immediately for every visitor.</p>
+
+    <div id="productList">
+      <div style="text-align:center;padding:60px 0;color:#9a9282;">Loading products…</div>
+    </div>
+  </div>
+</div>
+
+<div class="save-toast" id="saveToast">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M5 12l5 5L20 7"/></svg>
+  <span>Saved</span>
+</div>
+
+<script src="firebase-config.js"></script>
+<script src="products.js"></script>
+<script>
+  // ====== SIMPLE PASSWORD GATE ======
+  // ⚠️ Not secure — anyone who reads this file's source can see the password.
+  // This is meant to keep casual visitors out, not to protect sensitive data.
+  // Change this to something only you know.
+  const ADMIN_PASSWORD = '1212admin';
+
+  const loginScreen = document.getElementById('loginScreen');
+  const adminScreen = document.getElementById('adminScreen');
+  const passwordInput = document.getElementById('passwordInput');
+  const loginError = document.getElementById('loginError');
+
+  function tryLogin(){
+    if(passwordInput.value === ADMIN_PASSWORD){
+      loginScreen.style.display = 'none';
+      adminScreen.style.display = 'block';
+      loadProducts();
+    } else {
+      loginError.classList.add('show');
+    }
+  }
+  document.getElementById('loginBtn').addEventListener('click', tryLogin);
+  passwordInput.addEventListener('keydown', (e)=>{
+    if(e.key === 'Enter') tryLogin();
+  });
+  document.getElementById('logoutBtn').addEventListener('click', ()=>{
+    adminScreen.style.display = 'none';
+    loginScreen.style.display = 'flex';
+    passwordInput.value = '';
+    loginError.classList.remove('show');
+  });
+
+  // ====== PRODUCT MANAGEMENT ======
+  const productList = document.getElementById('productList');
+  const saveToast = document.getElementById('saveToast');
+  let saveTimeout;
+
+  function showSaved(){
+    saveToast.classList.add('show');
+    clearTimeout(saveTimeout);
+    saveTimeout = setTimeout(()=> saveToast.classList.remove('show'), 1800);
+  }
+
+  async function loadProducts(){
+    const products = await Catalog12.getAll();
+    const byCategory = {};
+    products.forEach(p => {
+      if(!byCategory[p.category]) byCategory[p.category] = [];
+      byCategory[p.category].push(p);
+    });
+
+    productList.innerHTML = '';
+    Object.entries(Catalog12.CATEGORY_LABELS).forEach(([catKey, catLabel]) => {
+      const items = byCategory[catKey] || [];
+      if(items.length === 0) return;
+
+      const group = document.createElement('div');
+      group.className = 'category-group';
+      group.innerHTML = `<h2>${catLabel}</h2>`;
+
+      items.forEach(p => {
+        const base = Catalog12.BASE_PRODUCTS.find(bp => bp.id === p.id);
+        const row = document.createElement('div');
+        row.className = 'product-row' + (p.outOfStock ? ' is-out' : '');
+        row.innerHTML = `
+          <img src="${p.img}" alt="${p.name}">
+          <div class="info">
+            <div class="name">${p.name}</div>
+            <div class="base-price">Default price: EGP ${base.price}</div>
+          </div>
+          <div class="price-edit">
+            <span>EGP</span>
+            <input type="number" min="0" step="5" value="${p.price}" data-id="${p.id}" data-role="price">
+          </div>
+          <div class="stock-toggle">
+            <span class="toggle-label">${p.outOfStock ? 'Unavailable' : 'Available'}</span>
+            <div class="switch${p.outOfStock ? '' : ' on'}" data-id="${p.id}" data-role="stock"></div>
+          </div>
+        `;
+        group.appendChild(row);
+      });
+
+      productList.appendChild(group);
+    });
+  }
+
+  productList.addEventListener('click', async (e)=>{
+    const toggle = e.target.closest('[data-role="stock"]');
+    if(!toggle) return;
+    const id = toggle.dataset.id;
+    const isCurrentlyOn = toggle.classList.contains('on');
+    const newOutOfStock = isCurrentlyOn; // if it was "on" (available), we're now marking it out of stock
+
+    toggle.classList.toggle('on');
+    const row = toggle.closest('.product-row');
+    row.classList.toggle('is-out', newOutOfStock);
+    row.querySelector('.toggle-label').textContent = newOutOfStock ? 'Unavailable' : 'Available';
+
+    await Catalog12.setOverride(id, {outOfStock: newOutOfStock});
+    showSaved();
+  });
+
+  productList.addEventListener('change', async (e)=>{
+    const input = e.target.closest('[data-role="price"]');
+    if(!input) return;
+    const id = input.dataset.id;
+    const newPrice = parseFloat(input.value);
+    if(isNaN(newPrice) || newPrice < 0) return;
+
+    await Catalog12.setOverride(id, {price: newPrice});
+    showSaved();
+  });
+</script>
+
+</body>
+</html>
