@@ -17,6 +17,7 @@
     --bronze:#A78A5C;
     --bronze-light:#C9B68C;
     --ink:#1C2B22;
+    --red:#b5564a;
     --serif:'Fraunces', serif;
     --sans:'Inter', sans-serif;
   }
@@ -81,12 +82,24 @@
   .save-toast.show{transform:translateY(0);opacity:1;}
   .save-toast svg{width:16px;height:16px;}
 
+  /* ===== CATEGORY GROUP ===== */
   .category-group{margin-bottom:40px;}
-  .category-group h2{
-    font-family:var(--serif);font-size:1.2rem;color:var(--green-deep);
+  .category-header{
+    display:flex;align-items:center;justify-content:space-between;
     margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid rgba(28,43,34,0.12);
   }
+  .category-header h2{
+    font-family:var(--serif);font-size:1.2rem;color:var(--green-deep);
+  }
+  .delete-category-btn{
+    display:flex;align-items:center;gap:6px;color:var(--red);font-size:0.8rem;font-weight:500;
+    padding:6px 12px;border-radius:6px;border:1px solid transparent;
+    transition:background .2s ease, border-color .2s ease;
+  }
+  .delete-category-btn:hover{background:rgba(181,86,74,0.08);border-color:rgba(181,86,74,0.25);}
+  .delete-category-btn svg{width:13px;height:13px;}
 
+  /* ===== PRODUCT ROW ===== */
   .product-row{
     display:flex;align-items:center;gap:18px;
     background:var(--cream);border-radius:8px;padding:16px 20px;margin-bottom:10px;
@@ -119,6 +132,114 @@
     background:#fff;transition:transform .25s ease;
   }
   .switch.on::after{transform:translateX(20px);}
+
+  .row-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+
+  .icon-btn{
+    width:34px;height:34px;border-radius:50%;flex-shrink:0;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .2s ease;
+  }
+  .icon-btn svg{width:15px;height:15px;}
+  .icon-btn.edit{color:var(--green-deep);}
+  .icon-btn.edit:hover{background:rgba(28,43,34,0.1);}
+  .icon-btn.delete{color:var(--red);}
+  .icon-btn.delete:hover{background:rgba(181,86,74,0.1);}
+
+  .admin-actions{
+    display:flex;gap:14px;margin-bottom:36px;flex-wrap:wrap;
+  }
+  .admin-action-btn{
+    background:var(--green-deep);color:var(--bg-paper);padding:12px 22px;border-radius:8px;
+    font-size:0.88rem;font-weight:600;display:flex;align-items:center;gap:8px;
+    transition:background .25s ease;
+  }
+  .admin-action-btn:hover{background:var(--bronze);}
+  .admin-action-btn svg{width:15px;height:15px;}
+  .admin-action-btn.secondary{
+    background:transparent;color:var(--green-deep);border:1px solid var(--green-deep);
+  }
+  .admin-action-btn.secondary:hover{background:rgba(28,43,34,0.06);}
+
+  /* ===== MODALS ===== */
+  .admin-modal-overlay{
+    position:fixed;inset:0;background:rgba(15,24,16,0.55);
+    opacity:0;pointer-events:none;transition:opacity .3s ease;
+    z-index:300;display:flex;align-items:center;justify-content:center;padding:20px;
+  }
+  .admin-modal-overlay.open{opacity:1;pointer-events:auto;}
+  .admin-modal{
+    background:var(--bg-paper);border-radius:10px;max-width:480px;width:100%;
+    max-height:88vh;overflow-y:auto;padding:32px;
+    transform:scale(.95) translateY(8px);opacity:0;
+    transition:transform .35s cubic-bezier(.16,.8,.3,1), opacity .35s ease;
+  }
+  .admin-modal-overlay.open .admin-modal{transform:scale(1) translateY(0);opacity:1;}
+  .admin-modal h2{font-family:var(--serif);font-size:1.35rem;color:var(--green-deep);margin-bottom:6px;}
+  .admin-modal .modal-sub{color:#6b6353;font-size:0.85rem;margin-bottom:22px;}
+
+  .field{margin-bottom:16px;}
+  .field label{display:block;font-size:0.84rem;font-weight:600;color:var(--green-deep);margin-bottom:6px;}
+  .field input[type="text"], .field input[type="number"], .field textarea, .field select{
+    width:100%;padding:11px 14px;border:1px solid rgba(28,43,34,0.2);border-radius:6px;
+    font-size:0.92rem;font-family:inherit;background:#fff;color:var(--ink);
+  }
+  .field input:focus, .field textarea:focus, .field select:focus{outline:none;border-color:var(--bronze);}
+  .field textarea{resize:vertical;min-height:60px;}
+
+  .image-picker{display:flex;align-items:center;gap:14px;}
+  .image-picker .preview{
+    width:64px;height:64px;border-radius:8px;overflow:hidden;background:var(--cream);
+    display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  }
+  .image-picker .preview img{width:100%;height:100%;object-fit:cover;}
+  .image-picker .preview svg{width:24px;height:24px;color:#b9b2a0;}
+  .image-picker .upload-btn{
+    border:1px solid var(--green-deep);color:var(--green-deep);padding:9px 16px;
+    border-radius:6px;font-size:0.84rem;transition:background .25s ease;
+  }
+  .image-picker .upload-btn:hover{background:rgba(28,43,34,0.06);}
+  .image-picker input[type="file"]{display:none;}
+
+  .field-error{color:#b5564a;font-size:0.8rem;margin-top:6px;display:none;}
+  .field-error.show{display:block;}
+
+  .modal-actions-row{display:flex;gap:12px;margin-top:24px;}
+  .modal-submit-btn{
+    flex:1;background:var(--green-deep);color:var(--bg-paper);padding:13px;
+    border-radius:8px;font-size:0.9rem;font-weight:600;transition:background .25s ease;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .modal-submit-btn:hover{background:var(--bronze);}
+  .modal-submit-btn:disabled{opacity:0.5;pointer-events:none;}
+  .modal-cancel-btn{
+    padding:13px 18px;border-radius:8px;font-size:0.9rem;color:#6b6353;
+    border:1px solid rgba(28,43,34,0.18);
+  }
+  .modal-spinner{
+    width:14px;height:14px;border:2px solid rgba(250,247,240,0.4);border-top-color:var(--bg-paper);
+    border-radius:50%;animation:adminSpin .7s linear infinite;display:none;
+  }
+  .modal-submit-btn.loading .modal-spinner{display:inline-block;}
+  @keyframes adminSpin{to{transform:rotate(360deg);}}
+
+  /* ===== CONFIRM MODAL ===== */
+  .confirm-modal .confirm-icon{
+    width:52px;height:52px;border-radius:50%;background:rgba(181,86,74,0.1);
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .confirm-modal .confirm-icon svg{width:22px;height:22px;color:var(--red);}
+  .confirm-modal h2{margin-bottom:8px;}
+  .confirm-modal .confirm-text{color:#6b6353;font-size:0.9rem;line-height:1.5;margin-bottom:24px;}
+  .confirm-modal .confirm-text strong{color:var(--ink);}
+  .modal-danger-btn{
+    flex:1;background:var(--red);color:#fff;padding:13px;
+    border-radius:8px;font-size:0.9rem;font-weight:600;transition:opacity .2s ease;
+    display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .modal-danger-btn:hover{opacity:0.85;}
+  .modal-danger-btn.loading .modal-spinner{display:inline-block;}
+  .modal-danger-btn:disabled{opacity:0.5;pointer-events:none;}
 
   @media (max-width:640px){
     .product-row{flex-wrap:wrap;}
@@ -153,7 +274,18 @@
 
   <div class="admin-body">
     <h1>Manage Your Menu</h1>
-    <p class="desc">Mark items as unavailable when you're out of stock, or update prices. Changes appear on the live menu immediately for every visitor.</p>
+    <p class="desc">Mark items as unavailable when you're out of stock, update prices, edit a product's name, description or photo, or add something new. Changes appear on the live menu immediately for every visitor.</p>
+
+    <div class="admin-actions">
+      <button class="admin-action-btn" id="openAddProduct">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+        Add New Product
+      </button>
+      <button class="admin-action-btn secondary" id="openAddCategory">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>
+        Add New Category
+      </button>
+    </div>
 
     <div id="productList">
       <div style="text-align:center;padding:60px 0;color:#9a9282;">Loading products…</div>
@@ -166,19 +298,175 @@
   <span>Saved</span>
 </div>
 
+<!-- ===== EDIT PRODUCT MODAL ===== -->
+<div class="admin-modal-overlay" id="editModalOverlay">
+  <div class="admin-modal">
+    <h2>Edit Product</h2>
+    <p class="modal-sub">Update the name, description, or photo. Price and availability are edited directly in the list.</p>
+
+    <div class="field">
+      <label>Photo</label>
+      <div class="image-picker">
+        <div class="preview" id="editPreview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <button class="upload-btn" id="editUploadBtn" type="button">Choose Photo</button>
+        <input type="file" id="editFileInput" accept="image/*">
+      </div>
+      <div class="field-error" id="editImageError">Something went wrong with that image.</div>
+    </div>
+
+    <div class="field">
+      <label for="editName">Product name</label>
+      <input type="text" id="editName">
+    </div>
+
+    <div class="field">
+      <label for="editDesc">Short description</label>
+      <textarea id="editDesc" rows="2"></textarea>
+    </div>
+
+    <div class="modal-actions-row">
+      <button class="modal-cancel-btn" id="editCancelBtn" type="button">Cancel</button>
+      <button class="modal-submit-btn" id="editSaveBtn" type="button">
+        <span class="modal-spinner"></span>
+        <span>Save Changes</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD PRODUCT MODAL ===== -->
+<div class="admin-modal-overlay" id="addProductOverlay">
+  <div class="admin-modal">
+    <h2>Add New Product</h2>
+    <p class="modal-sub">Add an item to an existing category.</p>
+
+    <div class="field">
+      <label>Photo</label>
+      <div class="image-picker">
+        <div class="preview" id="addProductPreview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <button class="upload-btn" id="addProductUploadBtn" type="button">Choose Photo</button>
+        <input type="file" id="addProductFileInput" accept="image/*">
+      </div>
+      <div class="field-error" id="addProductImageError">Something went wrong with that image.</div>
+    </div>
+
+    <div class="field">
+      <label for="addProductCategory">Category</label>
+      <select id="addProductCategory"></select>
+    </div>
+
+    <div class="field">
+      <label for="addProductName">Product name</label>
+      <input type="text" id="addProductName" placeholder="e.g. Hazelnut Latte">
+    </div>
+
+    <div class="field">
+      <label for="addProductDesc">Short description</label>
+      <textarea id="addProductDesc" placeholder="One line about this item"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="addProductPrice">Price (EGP)</label>
+      <input type="number" id="addProductPrice" min="0" step="5" placeholder="e.g. 95">
+    </div>
+
+    <div class="field-error" id="addProductFormError">Please fill in all fields and choose a photo.</div>
+
+    <div class="modal-actions-row">
+      <button class="modal-cancel-btn" id="addProductCancelBtn" type="button">Cancel</button>
+      <button class="modal-submit-btn" id="addProductSaveBtn" type="button">
+        <span class="modal-spinner"></span>
+        <span>Add Product</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== ADD CATEGORY MODAL ===== -->
+<div class="admin-modal-overlay" id="addCategoryOverlay">
+  <div class="admin-modal">
+    <h2>Add New Category</h2>
+    <p class="modal-sub">Create a new section in your menu with its first item.</p>
+
+    <div class="field">
+      <label for="addCategoryName">Category name</label>
+      <input type="text" id="addCategoryName" placeholder="e.g. Breakfast">
+    </div>
+
+    <p class="modal-sub" style="margin-top:22px;margin-bottom:14px;">First product in this category:</p>
+
+    <div class="field">
+      <label>Photo</label>
+      <div class="image-picker">
+        <div class="preview" id="addCategoryPreview">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>
+        </div>
+        <button class="upload-btn" id="addCategoryUploadBtn" type="button">Choose Photo</button>
+        <input type="file" id="addCategoryFileInput" accept="image/*">
+      </div>
+      <div class="field-error" id="addCategoryImageError">Something went wrong with that image.</div>
+    </div>
+
+    <div class="field">
+      <label for="addCategoryProductName">Product name</label>
+      <input type="text" id="addCategoryProductName" placeholder="e.g. Avocado Toast">
+    </div>
+
+    <div class="field">
+      <label for="addCategoryProductDesc">Short description</label>
+      <textarea id="addCategoryProductDesc" placeholder="One line about this item"></textarea>
+    </div>
+
+    <div class="field">
+      <label for="addCategoryProductPrice">Price (EGP)</label>
+      <input type="number" id="addCategoryProductPrice" min="0" step="5" placeholder="e.g. 120">
+    </div>
+
+    <div class="field-error" id="addCategoryFormError">Please fill in all fields and choose a photo.</div>
+
+    <div class="modal-actions-row">
+      <button class="modal-cancel-btn" id="addCategoryCancelBtn" type="button">Cancel</button>
+      <button class="modal-submit-btn" id="addCategorySaveBtn" type="button">
+        <span class="modal-spinner"></span>
+        <span>Create Category</span>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CONFIRM DELETE MODAL ===== -->
+<div class="admin-modal-overlay" id="confirmOverlay">
+  <div class="admin-modal confirm-modal">
+    <div class="confirm-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+    </div>
+    <h2 id="confirmTitle">Delete?</h2>
+    <p class="confirm-text" id="confirmText"></p>
+    <div class="modal-actions-row">
+      <button class="modal-cancel-btn" id="confirmCancelBtn" type="button">Cancel</button>
+      <button class="modal-danger-btn" id="confirmDeleteBtn" type="button">
+        <span class="modal-spinner"></span>
+        <span id="confirmBtnLabel">Delete</span>
+      </button>
+    </div>
+  </div>
+</div>
+
 <script src="firebase-config.js"></script>
+<script src="image-utils.js"></script>
 <script src="products.js"></script>
 <script>
-  // ====== SIMPLE PASSWORD GATE ======
-  // ⚠️ Not secure — anyone who reads this file's source can see the password.
-  // This is meant to keep casual visitors out, not to protect sensitive data.
-  // Change this to something only you know.
+  // ====== PASSWORD GATE ======
   const ADMIN_PASSWORD = '1212admin';
 
-  const loginScreen = document.getElementById('loginScreen');
-  const adminScreen = document.getElementById('adminScreen');
+  const loginScreen  = document.getElementById('loginScreen');
+  const adminScreen  = document.getElementById('adminScreen');
   const passwordInput = document.getElementById('passwordInput');
-  const loginError = document.getElementById('loginError');
+  const loginError   = document.getElementById('loginError');
 
   function tryLogin(){
     if(passwordInput.value === ADMIN_PASSWORD){
@@ -190,9 +478,7 @@
     }
   }
   document.getElementById('loginBtn').addEventListener('click', tryLogin);
-  passwordInput.addEventListener('keydown', (e)=>{
-    if(e.key === 'Enter') tryLogin();
-  });
+  passwordInput.addEventListener('keydown', e => { if(e.key==='Enter') tryLogin(); });
   document.getElementById('logoutBtn').addEventListener('click', ()=>{
     adminScreen.style.display = 'none';
     loginScreen.style.display = 'flex';
@@ -200,16 +486,17 @@
     loginError.classList.remove('show');
   });
 
-  // ====== PRODUCT MANAGEMENT ======
-  const productList = document.getElementById('productList');
+  // ====== TOAST ======
   const saveToast = document.getElementById('saveToast');
   let saveTimeout;
-
   function showSaved(){
     saveToast.classList.add('show');
     clearTimeout(saveTimeout);
     saveTimeout = setTimeout(()=> saveToast.classList.remove('show'), 1800);
   }
+
+  // ====== PRODUCT LIST ======
+  const productList = document.getElementById('productList');
 
   async function loadProducts(){
     const products = await Catalog12.getAll();
@@ -226,17 +513,36 @@
 
       const group = document.createElement('div');
       group.className = 'category-group';
-      group.innerHTML = `<h2>${catLabel}</h2>`;
+
+      // Category header with delete button
+      const header = document.createElement('div');
+      header.className = 'category-header';
+      header.innerHTML = `
+        <h2>${catLabel}</h2>
+        <button class="delete-category-btn" data-cat="${catKey}" data-cat-label="${catLabel}">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+          Delete Category
+        </button>`;
+      group.appendChild(header);
 
       items.forEach(p => {
         const base = Catalog12.BASE_PRODUCTS.find(bp => bp.id === p.id);
+        const defaultPriceLabel = base ? `Default price: EGP ${base.price}` : 'Added by you';
         const row = document.createElement('div');
         row.className = 'product-row' + (p.outOfStock ? ' is-out' : '');
         row.innerHTML = `
           <img src="${p.img}" alt="${p.name}">
           <div class="info">
             <div class="name">${p.name}</div>
-            <div class="base-price">Default price: EGP ${base.price}</div>
+            <div class="base-price">${defaultPriceLabel}</div>
+          </div>
+          <div class="row-actions">
+            <button class="icon-btn edit" data-id="${p.id}" data-role="edit" aria-label="Edit ${p.name}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            </button>
+            <button class="icon-btn delete" data-id="${p.id}" data-name="${p.name}" data-role="delete-product" aria-label="Delete ${p.name}">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+            </button>
           </div>
           <div class="price-edit">
             <span>EGP</span>
@@ -245,8 +551,7 @@
           <div class="stock-toggle">
             <span class="toggle-label">${p.outOfStock ? 'Unavailable' : 'Available'}</span>
             <div class="switch${p.outOfStock ? '' : ' on'}" data-id="${p.id}" data-role="stock"></div>
-          </div>
-        `;
+          </div>`;
         group.appendChild(row);
       });
 
@@ -254,31 +559,295 @@
     });
   }
 
+  // Stock toggle
   productList.addEventListener('click', async (e)=>{
     const toggle = e.target.closest('[data-role="stock"]');
     if(!toggle) return;
     const id = toggle.dataset.id;
     const isCurrentlyOn = toggle.classList.contains('on');
-    const newOutOfStock = isCurrentlyOn; // if it was "on" (available), we're now marking it out of stock
-
+    const newOutOfStock = isCurrentlyOn;
     toggle.classList.toggle('on');
     const row = toggle.closest('.product-row');
     row.classList.toggle('is-out', newOutOfStock);
     row.querySelector('.toggle-label').textContent = newOutOfStock ? 'Unavailable' : 'Available';
-
     await Catalog12.setOverride(id, {outOfStock: newOutOfStock});
     showSaved();
   });
 
+  // Price change
   productList.addEventListener('change', async (e)=>{
     const input = e.target.closest('[data-role="price"]');
     if(!input) return;
     const id = input.dataset.id;
     const newPrice = parseFloat(input.value);
     if(isNaN(newPrice) || newPrice < 0) return;
-
     await Catalog12.setOverride(id, {price: newPrice});
     showSaved();
+  });
+
+  // ====== CONFIRM DELETE MODAL ======
+  const confirmOverlay    = document.getElementById('confirmOverlay');
+  const confirmTitle      = document.getElementById('confirmTitle');
+  const confirmText       = document.getElementById('confirmText');
+  const confirmBtnLabel   = document.getElementById('confirmBtnLabel');
+  const confirmDeleteBtn  = document.getElementById('confirmDeleteBtn');
+  let pendingDeleteFn = null;
+
+  function openConfirm({ title, text, btnLabel, onConfirm }){
+    confirmTitle.textContent     = title;
+    confirmText.innerHTML        = text;
+    confirmBtnLabel.textContent  = btnLabel || 'Delete';
+    pendingDeleteFn = onConfirm;
+    openModal(confirmOverlay);
+  }
+
+  document.getElementById('confirmCancelBtn').addEventListener('click', ()=> closeModal(confirmOverlay));
+  confirmOverlay.addEventListener('click', e=>{ if(e.target===confirmOverlay) closeModal(confirmOverlay); });
+
+  confirmDeleteBtn.addEventListener('click', async ()=>{
+    if(!pendingDeleteFn) return;
+    confirmDeleteBtn.classList.add('loading');
+    confirmDeleteBtn.disabled = true;
+    await pendingDeleteFn();
+    confirmDeleteBtn.classList.remove('loading');
+    confirmDeleteBtn.disabled = false;
+    closeModal(confirmOverlay);
+    showSaved();
+    await loadProducts();
+  });
+
+  // Delete product trigger
+  productList.addEventListener('click', (e)=>{
+    const btn = e.target.closest('[data-role="delete-product"]');
+    if(!btn) return;
+    const id   = btn.dataset.id;
+    const name = btn.dataset.name;
+    openConfirm({
+      title: 'Delete Product',
+      text: `Remove <strong>${name}</strong> from the menu? This cannot be undone.`,
+      btnLabel: 'Delete Product',
+      onConfirm: () => Catalog12.deleteProduct(id)
+    });
+  });
+
+  // Delete category trigger
+  productList.addEventListener('click', (e)=>{
+    const btn = e.target.closest('.delete-category-btn');
+    if(!btn) return;
+    const catKey   = btn.dataset.cat;
+    const catLabel = btn.dataset.catLabel;
+    openConfirm({
+      title: 'Delete Category',
+      text: `Remove the entire <strong>${catLabel}</strong> category and all its products? This cannot be undone.`,
+      btnLabel: 'Delete Category',
+      onConfirm: () => Catalog12.deleteCategory(catKey)
+    });
+  });
+
+  // ====== SHARED HELPERS ======
+  function openModal(overlay){ overlay.classList.add('open'); }
+  function closeModal(overlay){ overlay.classList.remove('open'); }
+
+  function wireImagePicker({ uploadBtn, fileInput, preview, errorEl }){
+    let currentBase64 = null;
+
+    uploadBtn.addEventListener('click', () => fileInput.click());
+
+    fileInput.addEventListener('change', async () => {
+      const file = fileInput.files[0];
+      if(!file) return;
+      errorEl.classList.remove('show');
+      uploadBtn.textContent = 'Processing…';
+      uploadBtn.disabled = true;
+      try{
+        const base64 = await ImageUtils.fileToCompressedBase64(file);
+        currentBase64 = base64;
+        preview.innerHTML = `<img src="${base64}" alt="Preview">`;
+        uploadBtn.textContent = 'Change Photo';
+      } catch(err){
+        errorEl.textContent = err.message;
+        errorEl.classList.add('show');
+        uploadBtn.textContent = 'Choose Photo';
+      }
+      uploadBtn.disabled = false;
+    });
+
+    return {
+      getBase64: () => currentBase64,
+      reset: () => {
+        currentBase64 = null;
+        preview.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-5-5L5 21"/></svg>`;
+        uploadBtn.textContent = 'Choose Photo';
+        fileInput.value = '';
+        errorEl.classList.remove('show');
+      },
+      setBase64: (base64) => {
+        currentBase64 = base64;
+        if(base64){
+          preview.innerHTML = `<img src="${base64}" alt="Preview">`;
+          uploadBtn.textContent = 'Change Photo';
+        }
+      }
+    };
+  }
+
+  // ====== EDIT PRODUCT MODAL ======
+  const editModalOverlay = document.getElementById('editModalOverlay');
+  const editPicker = wireImagePicker({
+    uploadBtn: document.getElementById('editUploadBtn'),
+    fileInput: document.getElementById('editFileInput'),
+    preview: document.getElementById('editPreview'),
+    errorEl: document.getElementById('editImageError')
+  });
+  const editName    = document.getElementById('editName');
+  const editDesc    = document.getElementById('editDesc');
+  const editSaveBtn = document.getElementById('editSaveBtn');
+  let editingProductId = null;
+
+  productList.addEventListener('click', async (e)=>{
+    const editBtn = e.target.closest('[data-role="edit"]');
+    if(!editBtn) return;
+    const id = editBtn.dataset.id;
+    const products = await Catalog12.getAll();
+    const product  = products.find(p => p.id === id);
+    if(!product) return;
+
+    editingProductId = id;
+    editName.value = product.name;
+    editDesc.value = product.desc || '';
+    editPicker.reset();
+    editPicker.setBase64(product.img.startsWith('data:') ? product.img : null);
+    if(!product.img.startsWith('data:')){
+      document.getElementById('editPreview').innerHTML = `<img src="${product.img}" alt="${product.name}">`;
+    }
+    openModal(editModalOverlay);
+  });
+
+  document.getElementById('editCancelBtn').addEventListener('click', () => closeModal(editModalOverlay));
+  editModalOverlay.addEventListener('click', e=>{ if(e.target===editModalOverlay) closeModal(editModalOverlay); });
+
+  editSaveBtn.addEventListener('click', async () => {
+    if(!editingProductId) return;
+    const patch = {};
+    const newName = editName.value.trim();
+    const newDesc = editDesc.value.trim();
+    if(newName) patch.name = newName;
+    if(newDesc) patch.desc = newDesc;
+    const newImg = editPicker.getBase64();
+    if(newImg) patch.img = newImg;
+
+    if(Object.keys(patch).length === 0){ closeModal(editModalOverlay); return; }
+
+    editSaveBtn.classList.add('loading');
+    editSaveBtn.disabled = true;
+    await Catalog12.setOverride(editingProductId, patch);
+    editSaveBtn.classList.remove('loading');
+    editSaveBtn.disabled = false;
+    closeModal(editModalOverlay);
+    showSaved();
+    await loadProducts();
+  });
+
+  // ====== ADD PRODUCT MODAL ======
+  const addProductOverlay    = document.getElementById('addProductOverlay');
+  const addProductPicker     = wireImagePicker({
+    uploadBtn: document.getElementById('addProductUploadBtn'),
+    fileInput: document.getElementById('addProductFileInput'),
+    preview: document.getElementById('addProductPreview'),
+    errorEl: document.getElementById('addProductImageError')
+  });
+  const addProductCategorySelect = document.getElementById('addProductCategory');
+  const addProductFormError  = document.getElementById('addProductFormError');
+
+  document.getElementById('openAddProduct').addEventListener('click', () => {
+    addProductPicker.reset();
+    document.getElementById('addProductName').value  = '';
+    document.getElementById('addProductDesc').value  = '';
+    document.getElementById('addProductPrice').value = '';
+    addProductFormError.classList.remove('show');
+    addProductCategorySelect.innerHTML = Object.entries(Catalog12.CATEGORY_LABELS)
+      .map(([key, label]) => `<option value="${key}">${label}</option>`)
+      .join('');
+    openModal(addProductOverlay);
+  });
+
+  document.getElementById('addProductCancelBtn').addEventListener('click', () => closeModal(addProductOverlay));
+  addProductOverlay.addEventListener('click', e=>{ if(e.target===addProductOverlay) closeModal(addProductOverlay); });
+
+  document.getElementById('addProductSaveBtn').addEventListener('click', async () => {
+    const name     = document.getElementById('addProductName').value.trim();
+    const desc     = document.getElementById('addProductDesc').value.trim();
+    const price    = parseFloat(document.getElementById('addProductPrice').value);
+    const category = addProductCategorySelect.value;
+    const img      = addProductPicker.getBase64();
+
+    if(!name || !desc || isNaN(price) || price < 0 || !img || !category){
+      addProductFormError.classList.add('show'); return;
+    }
+    addProductFormError.classList.remove('show');
+    const id = Catalog12.slugify(name) + '-' + Date.now().toString(36).slice(-4);
+
+    const btn = document.getElementById('addProductSaveBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    await Catalog12.addProduct({ id, name, desc, price, category, img });
+    btn.classList.remove('loading'); btn.disabled = false;
+    closeModal(addProductOverlay);
+    showSaved();
+    await loadProducts();
+  });
+
+  // ====== ADD CATEGORY MODAL ======
+  const addCategoryOverlay = document.getElementById('addCategoryOverlay');
+  const addCategoryPicker  = wireImagePicker({
+    uploadBtn: document.getElementById('addCategoryUploadBtn'),
+    fileInput: document.getElementById('addCategoryFileInput'),
+    preview: document.getElementById('addCategoryPreview'),
+    errorEl: document.getElementById('addCategoryImageError')
+  });
+  const addCategoryFormError = document.getElementById('addCategoryFormError');
+
+  document.getElementById('openAddCategory').addEventListener('click', () => {
+    addCategoryPicker.reset();
+    document.getElementById('addCategoryName').value        = '';
+    document.getElementById('addCategoryProductName').value = '';
+    document.getElementById('addCategoryProductDesc').value = '';
+    document.getElementById('addCategoryProductPrice').value = '';
+    addCategoryFormError.classList.remove('show');
+    openModal(addCategoryOverlay);
+  });
+
+  document.getElementById('addCategoryCancelBtn').addEventListener('click', () => closeModal(addCategoryOverlay));
+  addCategoryOverlay.addEventListener('click', e=>{ if(e.target===addCategoryOverlay) closeModal(addCategoryOverlay); });
+
+  document.getElementById('addCategorySaveBtn').addEventListener('click', async () => {
+    const categoryName  = document.getElementById('addCategoryName').value.trim();
+    const productName   = document.getElementById('addCategoryProductName').value.trim();
+    const desc          = document.getElementById('addCategoryProductDesc').value.trim();
+    const price         = parseFloat(document.getElementById('addCategoryProductPrice').value);
+    const img           = addCategoryPicker.getBase64();
+
+    if(!categoryName || !productName || !desc || isNaN(price) || price < 0 || !img){
+      addCategoryFormError.textContent = 'Please fill in all fields and choose a photo.';
+      addCategoryFormError.classList.add('show'); return;
+    }
+    addCategoryFormError.classList.remove('show');
+
+    const categoryKey = Catalog12.slugify(categoryName);
+    if(Catalog12.CATEGORY_LABELS[categoryKey]){
+      addCategoryFormError.textContent = 'A category with this name already exists.';
+      addCategoryFormError.classList.add('show'); return;
+    }
+
+    const productId  = Catalog12.slugify(productName) + '-' + Date.now().toString(36).slice(-4);
+    const newProduct = { id: productId, name: productName, desc, price, category: categoryKey, img };
+
+    const btn = document.getElementById('addCategorySaveBtn');
+    btn.classList.add('loading'); btn.disabled = true;
+    await Catalog12.addCategory(categoryKey, categoryName, newProduct);
+    btn.classList.remove('loading'); btn.disabled = false;
+    closeModal(addCategoryOverlay);
+    showSaved();
+    await loadProducts();
   });
 </script>
 

@@ -46,29 +46,30 @@
   // ===============================================
 
   let dbPromise = null;
-
+ 
   function isConfigured(){
     return FIREBASE_CONFIG.apiKey !== 'YOUR_API_KEY' && FIREBASE_CONFIG.projectId !== 'YOUR_PROJECT_ID';
   }
-
+ 
   // Lazy-load the Firebase SDK from CDN only when first needed.
   async function getDb(){
     if(dbPromise) return dbPromise;
-
+ 
     dbPromise = (async () => {
       const { initializeApp } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js');
       const { getFirestore, doc, getDoc, setDoc } = await import('https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js');
-
+ 
       const app = initializeApp(FIREBASE_CONFIG);
       const db = getFirestore(app);
       return { db, doc, getDoc, setDoc };
     })();
-
+ 
     return dbPromise;
   }
-
-  const DOC_PATH = ['catalog', 'overrides'];
-
+ 
+  const OVERRIDES_DOC = ['catalog', 'overrides'];
+  const CUSTOM_DOC = ['catalog', 'custom'];
+ 
   async function getOverrides(){
     if(!isConfigured()){
       console.warn('[FirebaseDB] Not configured yet — using empty overrides. See setup instructions in firebase-config.js');
@@ -76,7 +77,7 @@
     }
     try{
       const { db, doc, getDoc } = await getDb();
-      const ref = doc(db, ...DOC_PATH);
+      const ref = doc(db, ...OVERRIDES_DOC);
       const snap = await getDoc(ref);
       return snap.exists() ? (snap.data().data || {}) : {};
     } catch(e){
@@ -84,7 +85,7 @@
       return {};
     }
   }
-
+ 
   async function saveOverrides(overrides){
     if(!isConfigured()){
       console.warn('[FirebaseDB] Not configured yet — change was not saved. See setup instructions in firebase-config.js');
@@ -92,7 +93,7 @@
     }
     try{
       const { db, doc, setDoc } = await getDb();
-      const ref = doc(db, ...DOC_PATH);
+      const ref = doc(db, ...OVERRIDES_DOC);
       await setDoc(ref, { data: overrides, updatedAt: new Date().toISOString() });
       return true;
     } catch(e){
@@ -100,7 +101,50 @@
       return false;
     }
   }
-
-  window.FirebaseDB = { getOverrides, saveOverrides, isConfigured };
-
+ 
+  // Custom data shape:
+  // {
+  //   products: [{id, name, price, category, desc, img}, ...],   // owner-added products
+  //   categories: { [categoryKey]: categoryLabel, ... }            // owner-added categories
+  // }
+  async function getCustomData(){
+    if(!isConfigured()){
+      console.warn('[FirebaseDB] Not configured yet — using empty custom catalog. See setup instructions in firebase-config.js');
+      return { products: [], categories: {} };
+    }
+    try{
+      const { db, doc, getDoc } = await getDb();
+      const ref = doc(db, ...CUSTOM_DOC);
+      const snap = await getDoc(ref);
+      if(!snap.exists()) return { products: [], categories: {} };
+      const data = snap.data();
+      return {
+        products: data.products || [],
+        categories: data.categories || {}
+      };
+    } catch(e){
+      console.error('[FirebaseDB] Failed to read custom catalog:', e);
+      return { products: [], categories: {} };
+    }
+  }
+ 
+  async function saveCustomData(customData){
+    if(!isConfigured()){
+      console.warn('[FirebaseDB] Not configured yet — change was not saved. See setup instructions in firebase-config.js');
+      return false;
+    }
+    try{
+      const { db, doc, setDoc } = await getDb();
+      const ref = doc(db, ...CUSTOM_DOC);
+      await setDoc(ref, { ...customData, updatedAt: new Date().toISOString() });
+      return true;
+    } catch(e){
+      console.error('[FirebaseDB] Failed to save custom catalog:', e);
+      return false;
+    }
+  }
+ 
+  window.FirebaseDB = { getOverrides, saveOverrides, getCustomData, saveCustomData, isConfigured };
+ 
 })();
+ 

@@ -43,16 +43,16 @@
     lines.push(`💰 *Total: EGP ${order.total}*`);
     return lines.join('\n');
   }
-
+ 
   async function send(order){
     if(BOT_TOKEN === 'YOUR_BOT_TOKEN_HERE' || CHAT_ID === 'YOUR_CHAT_ID_HERE'){
       console.warn('[TelegramOrders] Bot token / chat ID not configured yet. Order was not sent:', order);
       return false;
     }
-
+ 
     const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
     const text = formatMessage(order);
-
+ 
     try{
       const res = await fetch(url, {
         method: 'POST',
@@ -74,7 +74,8 @@
       return false;
     }
   }
-
+ 
   window.TelegramOrders = { send, formatMessage };
-
+ 
 })();
+ 
