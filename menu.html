@@ -35,8 +35,14 @@
 
   /* ===== NAV ===== */
   .nav{
-  position:fixed;top:0;left:0;right:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;
+  position:absolute;
+  top:0;
+  left:0;
+  right:0;
+  z-index:100;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
   padding:28px 56px;
   color:#fff;
   transition:padding .4s ease, color .3s ease;
@@ -134,10 +140,13 @@
   @media (min-width:861px){.mobile-menu{display:none;}}
 
   /* ===== HEADER ===== */
-  .menu-header{
-    background:var(--green-black);color:var(--bg-paper);
-    padding:80px 56px 56px;text-align:center;
-  }
+  .menu-header {
+  position: relative;  /* أضف الس السطر ده */
+  background: var(--green-black);
+  color: var(--bg-paper);
+  padding: 80px 56px 56px;
+  text-align: center;
+}
   @media (max-width:560px){.menu-header{padding:96px 22px 40px;}}
   .menu-header .eyebrow{
     font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--bronze-light);

@@ -49,9 +49,13 @@
     padding:28px 56px;
     mix-blend-mode:difference;
     color:#fff;
-    transition:padding .4s ease;
+    /* ← hide/show transition */
+    transition:padding .4s ease, transform .35s cubic-bezier(.16,.8,.3,1);
   }
   .nav.scrolled{padding:18px 56px;}
+  /* class نضيفها بالـ JS لما يكون المينيو مفتوح عشان الناف ميختفيش */
+  .nav.menu-open{transform:translateY(0) !important;}
+
   .nav__logo{
     font-family:var(--serif);font-weight:500;font-size:1.4rem;
     letter-spacing:0.04em;
@@ -95,6 +99,8 @@
   @media (max-width:860px){
     .nav__links{display:none;}
     .nav__burger{display:flex;}
+    .nav{padding:20px 22px;}
+    .nav.scrolled{padding:14px 22px;}
   }
 
   /* ===== MOBILE MENU PANEL ===== */
@@ -399,9 +405,7 @@
   .feat__card.out-of-stock .feat__desc{opacity:0.55;}
 
   /* ===== DELIVERY STRIP ===== */
-  .delivery{
-    background:var(--cream);
-  }
+  .delivery{background:var(--cream);}
   .delivery__inner{
     display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;
   }
@@ -769,10 +773,31 @@
   const clockEl = document.getElementById('clock');
   setTimeout(()=>{ clockEl.classList.add('pulsed'); }, 2150);
 
+  // ===== NAV: HIDE ON SCROLL DOWN, SHOW ON SCROLL UP =====
   const nav = document.getElementById('nav');
+  let lastScrollY = 0;
+  let ticking = false;
+
+  function handleScroll(){
+    const current = window.scrollY;
+    const goingDown = current > lastScrollY;
+
+    if(goingDown && current > 80){
+      nav.style.transform = 'translateY(-100%)';
+    } else {
+      nav.style.transform = 'translateY(0)';
+    }
+    nav.classList.toggle('scrolled', current > 40);
+    lastScrollY = current;
+    ticking = false;
+  }
+
   window.addEventListener('scroll', ()=>{
-    nav.classList.toggle('scrolled', window.scrollY > 40);
-  });
+    if(!ticking){
+      requestAnimationFrame(handleScroll);
+      ticking = true;
+    }
+  }, { passive: true });
 
   // ===== MOBILE MENU =====
   const navBurger = document.getElementById('navBurger');
@@ -783,12 +808,16 @@
     navBurger.classList.toggle('open', isOpen);
     navBurger.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     document.body.style.overflow = isOpen ? 'hidden' : '';
+    // لما المينيو يفتح خلي الناف يظهر دايماً
+    nav.classList.toggle('menu-open', isOpen);
+    if(isOpen) nav.style.transform = 'translateY(0)';
   }
   function closeMobileMenu(){
     mobileMenu.classList.remove('open');
     navBurger.classList.remove('open');
     navBurger.setAttribute('aria-label', 'Open menu');
     document.body.style.overflow = '';
+    nav.classList.remove('menu-open');
   }
 
   navBurger.addEventListener('click', toggleMobileMenu);
@@ -855,7 +884,6 @@
       btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>`;
     }, 1200);
   });
-
 </script>
 
 </body>
